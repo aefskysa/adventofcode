@@ -1,11 +1,16 @@
-import csv
 
-def check_password_step1(line: str):
+def parse_line(line: str):
     password = line.split(':')[1].strip()
     rule = line.split(':')[0]
     rule_letter = rule.split(' ')[1]
     rule_min = int(rule.split(' ')[0].split('-')[0])
     rule_max = int(rule.split(' ')[0].split('-')[1])
+
+    return password, rule, rule_letter, rule_min, rule_max
+
+def check_password_step1(line: str):
+
+    password, rule, rule_letter, rule_min, rule_max = parse_line(line)
 
     n_appearance = password.count(rule_letter)
     if rule_min <= n_appearance <= rule_max:
@@ -15,11 +20,10 @@ def check_password_step1(line: str):
 
 
 def check_password_step2(line: str):
-    password = line.split(':')[1].strip()
-    rule = line.split(':')[0]
-    rule_letter = rule.split(' ')[1]
-    rule_first_pos = int(rule.split(' ')[0].split('-')[0]) - 1
-    rule_second_pos = int(rule.split(' ')[0].split('-')[1]) - 1
+
+    password, rule, rule_letter, rule_first_pos, rule_second_pos = parse_line(line)
+    rule_first_pos = rule_first_pos - 1
+    rule_second_pos = rule_second_pos - 1
 
     first_pos_check = password[rule_first_pos] == rule_letter
 
@@ -29,11 +33,12 @@ def check_password_step2(line: str):
 
 
 def main():
-    list_obj = []
-    with open('../inputs/day2_1_input.txt') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            list_obj.append(row[0])
+
+    with open('../inputs/day2_1_input.txt', 'r') as f:
+        file_string = f.read()
+
+    records = [r for r in file_string.split('\n') if r.strip()]
+
 
     test_input1 = '1-3 a: abcde'
     test_input2 = '1-3 b: cdefg'
@@ -50,7 +55,7 @@ def main():
 
     n_valid_pw_1 = 0
     n_valid_pw_2 = 0
-    for row in list_obj:
+    for row in records:
         a = check_password_step1(row)
         if a:
             n_valid_pw_1 = n_valid_pw_1 + 1
