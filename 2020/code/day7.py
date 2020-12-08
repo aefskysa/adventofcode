@@ -28,7 +28,9 @@ def parse_individual_rule(rule_string):
     return bag_rule_dict
 
 
-def get_outer_bags(bag_of_interest_modifier, bag_of_interest_color, bag_rules, set_of_colors=set([])):
+def get_outer_bags(bag_of_interest_modifier, bag_of_interest_color, bag_rules, set_of_colors=None):
+    if set_of_colors is None:
+        set_of_colors = set([])
     for rule in bag_rules:
         for inner_bag in rule['inner']:
             if inner_bag['modifier'] == bag_of_interest_modifier and inner_bag['color'] == bag_of_interest_color:
@@ -101,8 +103,7 @@ dark violet bags contain no other bags.
         all_bag_rules.append(parse_individual_rule(i))
 
 
-    final_set = set([])
-    outer_bags = get_outer_bags('shiny', 'gold', all_bag_rules, final_set)
+    outer_bags = get_outer_bags('shiny', 'gold', all_bag_rules)
     print(f"Part 1: Shiny Gold Bag can be in {len(outer_bags)} distinct other bags")
     inner_bags = count_inner_bags('shiny', 'gold', all_bag_rules)
     print(f"Part 1: Shiny Gold Bag has {inner_bags} bags inside it")
