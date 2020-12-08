@@ -31,8 +31,6 @@ def parse_individual_rule(rule_string):
 def get_outer_bags(bag_of_interest_modifier, bag_of_interest_color, bag_rules, set_of_colors=set([])):
     for rule in bag_rules:
         for inner_bag in rule['inner']:
-            # print(inner_bag)
-            # print(bag_of_interest_modifier, bag_of_interest_color, rule['outer']['modifier'], rule['outer']['color'])
             if inner_bag['modifier'] == bag_of_interest_modifier and inner_bag['color'] == bag_of_interest_color:
                 set_of_colors.add(rule['outer']['modifier'] + rule['outer']['color'])
                 set_of_colors = set_of_colors.union(get_outer_bags(rule['outer']['modifier'], rule['outer']['color'], bag_rules, set_of_colors))
@@ -48,10 +46,7 @@ def count_inner_bags(bag_of_interest_modifier, bag_of_interest_color, bag_rules,
                 return 0
             for inner_bag in rule['inner']:
                 n_inner = inner_bag['quantity']
-                # count_of_bags = count_of_bags + n_inner + n_inner*count_inner_bags(inner_bag['modifier'], inner_bag['color'], bag_rules)
-                count_of_bags = count_of_bags + n_inner * (1+ count_inner_bags(inner_bag['modifier'],
-                                                                                               inner_bag['color'],
-                                                                                               bag_rules))
+                count_of_bags = count_of_bags + n_inner + n_inner*count_inner_bags(inner_bag['modifier'], inner_bag['color'], bag_rules)
     return count_of_bags
 
 
@@ -81,7 +76,6 @@ dotted black bags contain no other bags.
     assert count_inner_bags('dotted', 'black', test_bag_rules) == 0
     assert count_inner_bags('vibrant', 'plum', test_bag_rules) == 11
 
-    print(count_inner_bags('shiny', 'gold', test_bag_rules))
     assert count_inner_bags('shiny', 'gold', test_bag_rules) == 32
 
     test_rules_2 = '''shiny gold bags contain 2 dark red bags.
