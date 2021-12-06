@@ -14,8 +14,6 @@ def create_fish_state(input_list, max_life=9):
 def evolve_fish(fish_state, ndays, regen_idx=7):
     for d in range(ndays + 1):
         new_state = fish_state.copy()
-        new_fish = 0
-        regen_fish = 0
         if d == 0:
             continue
         for idx, c in enumerate(fish_state):
