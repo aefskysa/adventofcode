@@ -2,7 +2,7 @@ from helper_funcs import read_input_file, parse_input_into_list
 
 aoc_day = 6
 
-def create_fish_state(input_list, max_life = 9):
+def create_fish_state(input_list, max_life=9):
     init_days = [int(x) for x in input_list[0].split(',')]
     each_day_count = [0] * (max_life + 1) # Positions in this list correspond to -1 to 8 for part1
     for d in init_days:
